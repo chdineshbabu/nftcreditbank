@@ -36,8 +36,7 @@ function CourseList() {
           courses.map((course) => (
             <li
               key={course._id}
-              onClick={() => router.push(`/course/${course._id}`)}
-              className="text-md border-b p-2 rounded-sm hover:scale-105 transition-all delay-75 flex justify-between items-center"
+              className="text-md border-b p-2 rounded-sm transition-all delay-75 flex justify-between items-center"
             >
                 <div className="flex gap-3">
               <p>{course?.name}</p>
