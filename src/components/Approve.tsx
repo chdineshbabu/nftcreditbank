@@ -44,7 +44,7 @@ function CourseList() {
               <p>{course?.credits} Credits</p>
               </div>
               <button className="border p-1 px-3 rounded-md hover:bg-gray-200 hover:text-gray-900">
-                Approve Nft
+                Approve NFT
               </button>
             </li>
           ))

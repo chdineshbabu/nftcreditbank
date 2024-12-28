@@ -12,13 +12,13 @@ function Page() {
     const [data, setData] = useState<UserData | null>(null)
     const {publicKey} = useWallet()
     const pub = publicKey?.toString()
-    async function check(){
-        const data = await axios.get(`/api/users/${pub}`)
-        setData(data.data)
-    }
     useEffect(() => {
+        async function check(){
+            const data = await axios.get(`/api/users/${pub}`)
+            setData(data.data)
+        }
         check()
-    }, [publicKey])
+    }, [pub])
   return (
     <div className='h-screen flex  items-center justify-center'>
         {data && data.role === "Admin" ? <StudentForm /> : <h1>You are not an Admin</h1>}

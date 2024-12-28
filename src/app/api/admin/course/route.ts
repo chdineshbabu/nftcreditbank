@@ -14,7 +14,7 @@ export async function POST(req:Request){
         const savedCourse = await course.save();
         return NextResponse.json({ savedCourse })
     } catch (error) {
-        return NextResponse.json({ error: 'Failed to save course' }, { status: 500 });
+        return NextResponse.json({ error},{ status: 500 });
     }
 
 }

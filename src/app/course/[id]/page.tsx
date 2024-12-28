@@ -53,7 +53,7 @@ function Page() {
         <h1 className="text-2xl font-serif text-gray-200 p-4">Students</h1>
         <div className="flex flex-col">
           {student.map((student) => (
-            <div key={student.id} className="border p-2 flex justify-between items-center">
+            <div key={student._id} className="border p-2 flex justify-between items-center">
               <div className="flex gap-4">
               <p className="text-gray-200">{student?.name}</p>
               </div>

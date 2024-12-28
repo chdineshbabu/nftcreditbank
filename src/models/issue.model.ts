@@ -9,7 +9,7 @@ const IssueSchema = new mongoose.Schema({
   status: { 
     type: String, 
     required: true, 
-    enum: ["Issue", "Approved"] 
+    enum: ["Not","Issue", "Approved"] 
   },
 });
 

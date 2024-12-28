@@ -10,29 +10,32 @@ type Course = {
   credits: number;
   status: string;
 };
+type User = {
+  name: string;
+}
 
 function Page() {
   const { publicKey } = useWallet();
   const pub = publicKey?.toString();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<User | null>(null);
   const [sub, setSub] = useState<Course[]>([]);
-  async function getUser() {
+  const getUser = React.useCallback(async () => {
     const user = await axios.get(`/api/users/${pub}`);
-    setUser(user.data);
-  }
-  async function getSubjects() {
+    setUser(user.data[0]);
+  }, [pub]);
+  const getSubjects = React.useCallback(async () => {
     const subjects = await axios.get(`/api/issue/${pub}`);
     setSub(subjects.data);
-  }
+  }, [pub]);
   useEffect(() => {
     getUser();
     getSubjects();
-  }, [publicKey]);
+  }, [publicKey, getUser, getSubjects]);
   console.log(sub);
   return (
     <div className="mx-96 my-16">
       <div className="flex justify-between items-end">
-        <h1 className="text-3xl font-serif">Welcome, {user?.name} 👋</h1>
+        <h1 className="text-3xl font-serif">Welcome, {user?.name ?? "Student"} 👋</h1>
         <WalletDisconnectButton />
       </div>
       <div className="py-12 flex justify-between gap-4">
