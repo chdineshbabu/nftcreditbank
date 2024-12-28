@@ -14,3 +14,16 @@ export async  function GET(req: Request, { params }: { params: { walletAddress: 
     }
     
 }
+
+export async function PUT(req:Request, { params }: { params: { walletAddress: string } }){
+    const {walletAddress} = await params;
+    const {status} = await req.json();
+    try{
+        connectMongoDB();
+        const user = await Issue.findOneAndUpdate({walletAddress}, {status}, {new: true});
+        if(!user){return NextResponse.json({message: "User not found"}, {status: 404});}
+        return NextResponse.json(user);
+    }catch(err){
+        console.log(err);
+    }
+}
