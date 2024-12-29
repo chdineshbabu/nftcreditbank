@@ -1,19 +1,16 @@
 "use client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { 
-  PublicKey, 
-  Transaction
-} from '@solana/web3.js';
-import { 
-  TOKEN_2022_PROGRAM_ID,  // Using TOKEN_2022_PROGRAM_ID instead of TOKEN_PROGRAM_ID
-  createTransferInstruction, 
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey, Transaction } from "@solana/web3.js";
+import {
+  TOKEN_2022_PROGRAM_ID, // Using TOKEN_2022_PROGRAM_ID instead of TOKEN_PROGRAM_ID
+  createTransferInstruction,
   getAssociatedTokenAddress,
   createAssociatedTokenAccountInstruction,
   getAccount,
-  getMint
-} from '@solana/spl-token';
+  getMint,
+} from "@solana/spl-token";
 
 interface Course {
   _id: string;
@@ -31,8 +28,10 @@ function CourseList() {
   const { connection } = useConnection();
 
   // Replace with your token mint address
-  const TOKEN_MINT = new PublicKey("9Vtd85wimyq9Krttcv8pDYACTy9LWvzf1yxRXo4Fbq74");
-  
+  const TOKEN_MINT = new PublicKey(
+    "9Vtd85wimyq9Krttcv8pDYACTy9LWvzf1yxRXo4Fbq74"
+  );
+
   async function getCourses() {
     try {
       const res = await axios.get("/api/issue");
@@ -58,12 +57,12 @@ function CourseList() {
 
       // Get token mint info to determine decimals using TOKEN_2022_PROGRAM_ID
       const mintInfo = await getMint(
-        connection, 
+        connection,
         TOKEN_MINT,
         undefined,
         TOKEN_2022_PROGRAM_ID
       );
-      
+
       // Calculate amount based on token decimals
       const amount = course.credits * Math.pow(10, mintInfo.decimals);
 
@@ -89,14 +88,14 @@ function CourseList() {
       let recipientATAExists = false;
       try {
         await getAccount(
-          connection, 
+          connection,
           recipientATA,
           undefined,
           TOKEN_2022_PROGRAM_ID
         );
         recipientATAExists = true;
       } catch (error) {
-        console.log("Recipient ATA doesn't exist, creating one...",error);
+        console.log(error);
       }
 
       // If recipient ATA doesn't exist, add instruction to create it
@@ -125,39 +124,38 @@ function CourseList() {
       transaction.add(transferInstruction);
 
       // Get latest blockhash
-      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+      const { blockhash, lastValidBlockHeight } =
+        await connection.getLatestBlockhash();
       transaction.recentBlockhash = blockhash;
       transaction.feePayer = publicKey;
 
       // Send transaction
       const signature = await sendTransaction(transaction, connection);
-      console.log("Transaction sent:", signature);
 
       // Wait for confirmation
       const confirmation = await connection.confirmTransaction({
         signature,
         blockhash,
-        lastValidBlockHeight
+        lastValidBlockHeight,
       });
 
       if (confirmation.value.err) {
         throw new Error("Transaction failed!");
       }
-
-      console.log("Transaction confirmed:", signature);
       alert(`Transaction successful! Signature: ${signature}`);
-      
+
       // Refresh the course list
-      async function updateCourse(){
-        try{
-          await axios.put(`/api/issue/${course.walletAddress}`, { status: "Approved" });
-        }catch(err){
+      async function updateCourse() {
+        try {
+          await axios.put(`/api/issue/${course.walletAddress}`, {
+            status: "Approved",
+          });
+        } catch (err) {
           console.log(err);
         }
       }
-      updateCourse()
+      updateCourse();
       getCourses();
-
     } catch (error) {
       console.error("Error processing transaction:", error);
       alert(`Transaction failed: ${error}`);
@@ -167,28 +165,30 @@ function CourseList() {
   };
 
   return (
-    <div className="border text-gray-300 px-8 py-6 rounded-md w-full h-96 overflow-y-scroll shadow-md">
+    <div className="w-full max-w-2xl h-96 bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 rounded-xl p-6 shadow-lg overflow-y-scroll border border-gray-700 text-gray-300">
       <div className="flex justify-between items-center pb-4">
-        <h1 className="text-xl font-bold">Pending Approvals</h1>
+        <h1 className="text-2xl font-bold text-white">Pending Approvals</h1>
       </div>
-      <ul className="border-gray-500">
+      <ul className="divide-y divide-gray-600">
         {courses.length === 0 ? (
-          <li>Loading...</li>
+          <li className="text-center py-4 text-gray-400">Loading...</li>
         ) : (
           courses.map((course) => (
             <li
               key={course._id}
-              className="text-md border-b p-2 rounded-sm transition-all delay-75 flex justify-between items-center"
+              className="flex justify-between items-center py-3 px-4 bg-gray-700 hover:bg-gradient-to-r from-cyan-500 to-blue-500 hover:text-black rounded-lg shadow-sm transition-all delay-75"
             >
-              <div className="flex gap-3">
-                <p>{course?.name}</p>
-                <p>{course?.courseName}</p>
-                <p>{course?.credits} Credits</p>
+              <div className="flex flex-col md:flex-row gap-3 items-start md:items-center">
+                <p className="font-semibold">{course?.name}</p>
+                <p className="text-sm ">{course?.courseName}</p>
+                <p className="text-sm ">
+                  {course?.credits} Credits
+                </p>
               </div>
               <button
                 onClick={() => handleApprove(course)}
                 disabled={!connected || isLoading}
-                className="border p-1 px-3 rounded-md hover:bg-gray-200 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="text-sm font-medium bg-gray-800 border border-cyan-500 hover:bg-cyan-500 hover:text-black text-cyan-400 px-4 py-2 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? "Processing..." : "Approve NFT"}
               </button>

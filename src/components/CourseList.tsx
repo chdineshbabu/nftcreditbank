@@ -24,23 +24,27 @@ function CourseList() {
   useEffect(() => {
     getCourses();
   }, []);
-  console.log(courses);
 
   return (
-    <div className="border px-8 py-6 rounded-md w-1/3 h-96 overflow-y-scroll shadow-md">
-      <h1 className="text-xl pb-2 font-bold">Courses</h1>
-      <ul className=" border-gray-500">
-        {courses.length === 0 ? (
-          <li>Loading...</li>
-        ) : (
-          courses.map((course) => (
-            <li key={course._id} onClick={()=>router.push(`/course/${course._id}`)} className="text-md border-b p-2 rounded-sm hover:scale-105 transition-all delay-75">
-              {course?.courseName}
-            </li>
-          ))
-        )}
-      </ul>
-    </div>
+<div className="w-full max-w-md h-96 bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 rounded-xl p-6 shadow-lg overflow-y-scroll border border-gray-700">
+  <h1 className="text-2xl font-bold text-white mb-4">Courses</h1>
+  <ul className="divide-y divide-gray-600">
+    {courses.length === 0 ? (
+      <li className="text-gray-400 text-center py-4">Loading...</li>
+    ) : (
+      courses.map((course) => (
+        <li
+          key={course._id}
+          onClick={() => router.push(`/course/${course._id}`)}
+          className="text-white py-2 px-4 rounded-lg hover:bg-gradient-to-r from-cyan-500 to-blue-500 hover:text-black transition-all cursor-pointer shadow-md mb-2"
+        >
+          {course?.courseName}
+        </li>
+      ))
+    )}
+  </ul>
+</div>
+
   );
 }
 
