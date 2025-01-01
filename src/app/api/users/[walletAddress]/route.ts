@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import User from "@/src/models/user.model";
 import connectMongoDB from "@/src/libs/mongo";
 
-export async  function GET(req: Request, { params }: { params: { walletAddress: string } }){
+export async  function GET(req: Request, { params }: { params: Promise<{ walletAddress: string }> }){
     const {walletAddress} = await params;
     try{
         connectMongoDB();

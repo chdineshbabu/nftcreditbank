@@ -10,7 +10,6 @@ function AdminHeader() {
   const [totalSupply, setTotalSupply] = useState<number>(0);
   const [mint, setMint] = useState<string>("");
   const [currentSupply, setCurrentSupply] = useState<number>(0);
-  const [certificatesIssued, setCertificatesIssued] = useState<number>(0);
   const getMetadata = React.useCallback(async () => {
     const tokenAccounts = await connection.getTokenAccountsByOwner(publicKey as PublicKey, {
       programId: TOKEN_2022_PROGRAM_ID,

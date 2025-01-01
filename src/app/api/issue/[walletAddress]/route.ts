@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import connectMongoDB from "@/src/libs/mongo";
 import Issue from "@/src/models/issue.model";
 
-export async  function GET(req: Request, { params }: { params: { walletAddress: string } }){
+export async  function GET(req: Request, { params }: { params: Promise<{ walletAddress: string }> }){
     const {walletAddress} = await params;
     try{
         connectMongoDB();
@@ -15,7 +15,7 @@ export async  function GET(req: Request, { params }: { params: { walletAddress: 
     
 }
 
-export async function PUT(req:Request, { params }: { params: { walletAddress: string } }){
+export async function PUT(req:Request, { params }: { params: Promise<{ walletAddress: string }> }){
     const {walletAddress} = await params;
     const {status} = await req.json();
     try{

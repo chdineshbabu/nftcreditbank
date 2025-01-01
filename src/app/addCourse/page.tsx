@@ -1,10 +1,12 @@
+"use client"
+
 import { CourseForm } from '@/src/components/CourseForm'
 import { ArrowLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
 function Page() {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <div className='h-screen flex  items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900'>
         <CourseForm />
