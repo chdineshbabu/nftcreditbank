@@ -18,7 +18,9 @@ function AdminHeader() {
     const mintAddress = accountData.mint;
     setMint(mintAddress.toString());
     const metadata = await getMint(connection, mintAddress, undefined, TOKEN_2022_PROGRAM_ID);
+    console.log("Metadata: ", metadata.supply);
     setTotalSupply(Number(metadata.supply));
+    console.log("Total Supply: ", metadata.supply.toString());
     const some = await getTokenMetadata(connection, mintAddress).then((metadata) => {
       return {
         amount: accountData.amount.toString(),
@@ -26,7 +28,7 @@ function AdminHeader() {
       };
     });
     setCurrentSupply(Number(some.amount));
-  }, [connection, publicKey, totalSupply]);
+  }, [connection, publicKey]);
   useEffect(() => {
     getMetadata();
   }, [getMetadata]);

@@ -155,6 +155,7 @@ function CourseList() {
         }
       }
       updateCourse();
+      
       getCourses();
     } catch (error) {
       console.error("Error processing transaction:", error);
@@ -171,7 +172,7 @@ function CourseList() {
       </div>
       <ul className="divide-y divide-gray-600">
         {courses.length === 0 ? (
-          <li className="text-center py-4 text-gray-400">Loading...</li>
+          <li className="text-center py-4 text-gray-400"></li>
         ) : (
           courses.map((course) => (
             <li

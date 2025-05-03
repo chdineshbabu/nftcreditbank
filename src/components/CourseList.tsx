@@ -30,7 +30,7 @@ function CourseList() {
   <h1 className="text-2xl font-bold text-white mb-4">Courses</h1>
   <ul className="divide-y divide-gray-600">
     {courses.length === 0 ? (
-      <li className="text-gray-400 text-center py-4">Loading...</li>
+      <li className="text-gray-400 text-center py-4"></li>
     ) : (
       courses.map((course) => (
         <li
